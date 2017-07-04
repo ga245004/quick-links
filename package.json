@@ -14,7 +14,9 @@
         "start": "electron .",
         "debug": "electron --debug=5858 ./main.js",
         "build": "electron-packager --out=build --packageManager=yarn --overwrite .",
-        "save": "git push origin master --tags"
+        "saveT": "git push origin master --tags",
+        "save": "git push origin master",
+        "update": "git pull origin master"
     },
     "repository": {
         "type": "git",
