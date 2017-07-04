@@ -12,6 +12,7 @@
         "uv": "npm version minor",
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "electron .",
+        "debug": "electron --debug=5858 ./main.js",
         "build": "electron-packager --out=build --packageManager=yarn --overwrite .",
         "save": "git push origin master --tags"
     },
