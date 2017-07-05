@@ -16,7 +16,8 @@
         "build": "electron-packager --out=build --packageManager=yarn --overwrite .",
         "saveT": "git push origin master --tags",
         "save": "git push origin master",
-        "update": "git pull origin master"
+        "update": "git pull origin master",
+        "webpack": "node ./webpack-runner.js"
     },
     "repository": {
         "type": "git",
@@ -32,5 +33,14 @@
         "chai": "^4.0.2",
         "electron": "^1.6.11",
         "mocha": "^3.4.2"
+    },
+    "dependencies": {
+        "babel-core": "^6.25.0",
+        "babel-loader": "^7.1.1",
+        "babel-preset-es2017": "^6.24.1",
+        "babel-preset-react": "^6.24.1",
+        "react": "^15.6.1",
+        "react-dom": "^15.6.1",
+        "webpack": "^3.0.0"
     }
 }

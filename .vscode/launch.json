@@ -1,7 +1,11 @@
 {
     "version": "0.2.0",
-    "configurations": [
-
+    "configurations": [{
+            "type": "node",
+            "request": "launch",
+            "name": "Webpack Runner",
+            "program": "${workspaceRoot}/webpack-runner.js"
+        },
         {
             "name": "Debug Main Process",
             "type": "node",
