@@ -5,6 +5,7 @@ class App extends React.Component {
 
     render() {
     return <form>
+                <label>Testing</label>
                 <input type="text" />
                 <input type="submit" />
             </form>;

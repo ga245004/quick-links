@@ -8,9 +8,12 @@ try {
 
 function start() {
     const config = require('./webpack.config.js');
+    const RunnerPlugin = require('./RunnerPlugin');
     const webpack = require('webpack');
 
-    webpack(config).run(function(error, stats) {
+    config.plugins = [new RunnerPlugin()].concat(config.plugins);
+
+    var compiler = webpack(config,function(error, stats) {
         if (error) {
             console.log(error);
         } else {
@@ -50,7 +53,6 @@ function start() {
 }
 
 var installCount = 0;
-
 function install(dep, callBack) {
 
     if (installCount > 5) {
@@ -65,9 +67,17 @@ function install(dep, callBack) {
 
 function run_cmd(cmd, args, callBack) {
     var spawn = require('child_process').spawn;
-    var child = spawn(cmd, args);
+    var child = spawn(cmd, args, {
+        cwd : __dirname,
+        stdio: 'inherit'
+    });
     var resp = "";
 
-    child.stdout.on('data', function(buffer) { resp += buffer.toString() });
-    child.stdout.on('end', function() { callBack(resp) });
+    child.stdout.on('data', function(buffer) {
+         resp += buffer.toString();
+        console.log(buffer.toString())});
+
+    child.stdout.on('end', function() { 
+        callBack(resp);
+     });
 }

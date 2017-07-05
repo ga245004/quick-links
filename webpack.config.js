@@ -1,11 +1,13 @@
 const webpack = require('webpack');
+//var HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 var srcPath = path.join(__dirname, 'src');
 var distPath = path.join(__dirname, 'lib');
 
 module.exports = {
-    watch: true,
+    watch: false,
+    node: {console: true},
     cache: true,
     devtool: 'source-map',
     context: srcPath,
