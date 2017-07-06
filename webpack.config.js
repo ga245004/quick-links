@@ -6,7 +6,7 @@ var srcPath = path.join(__dirname, 'src');
 var distPath = path.join(__dirname, 'lib');
 
 module.exports = {
-    watch: false,
+    watch: true,
     node: {console: true},
     cache: true,
     devtool: 'source-map',
@@ -29,6 +29,6 @@ module.exports = {
         modules: ["node_modules"],
     },
     plugins: [
-        new webpack.NoEmitOnErrorsPlugin()
+        //new webpack.NoEmitOnErrorsPlugin()
     ]
 };

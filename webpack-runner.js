@@ -11,7 +11,11 @@ function start() {
     const RunnerPlugin = require('./RunnerPlugin');
     const webpack = require('webpack');
 
-    config.plugins = [new RunnerPlugin()].concat(config.plugins);
+    var runner = new RunnerPlugin({
+        "watch-run" : WatchRun
+    });
+
+    config.plugins = [runner].concat(config.plugins);
 
     var compiler = webpack(config,function(error, stats) {
         if (error) {
@@ -51,6 +55,20 @@ function start() {
         }
     });
 }
+
+
+function WatchRun(watching, callback){
+    debugger;
+    var changedTimes = watching.compiler.watchFileSystem.watcher.mtimes;
+      var changedFiles = Object.keys(changedTimes);
+      for (var i in changedFiles) {
+        changedFiles[i] = "     " + changedFiles[i];
+      }
+      if (changedFiles.length) {
+        console.log("✨  New build triggered, files changed:\n" + changedFiles.join("\n"));
+}
+}
+
 
 var installCount = 0;
 function install(dep, callBack) {

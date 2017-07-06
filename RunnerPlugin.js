@@ -1,10 +1,17 @@
-function RunnerPlugin(){};
+function RunnerPlugin(callbacks){
 
-RunnerPlugin.prototype.apply = function(compiler){
-    
-    var runner = this;
+        callbacks = Object.assign({}, callbacks);
 
-    var CompilerEvents = [
+        this.CompilerEvents.forEach(function(entry){
+           entry.callback =  callbacks[entry.event];
+        });
+
+        this.CompilationEvents.forEach(function(entry){
+           entry.callback =  callbacks[entry.event];
+        });
+};
+
+RunnerPlugin.prototype.CompilerEvents = [
         {event: "entry-option", type:"bailResult"},
         {event: "after-plugins", type:"sync"},
         {event: "after-resolvers", type:"sync"},
@@ -20,11 +27,26 @@ RunnerPlugin.prototype.apply = function(compiler){
         {event: "compile", type:"sync"},
         {event: "this-compilation", type:"sync"},
         {event: "compilation", type:"sync", 
-            compilationEvents : [
+            compilationEvents : true },
+        {event: "make", type:"parallel"},
+        {event: "after-compile", type:"async"},
+        {event: "should-emit", type:"bailResult"},
+        {event: "need-additional-pass",  type:"bailResult"},
+        {event: "additional-pass", type:"bailResult"},
+        {event: "emit", type:"async"},
+        {event: "after-emit", type:"async"},
+        
+        {event: "done", type:"sync"},
+        {event: "failed", type:"sync"},
+        {event: "invalid", type:"sync"},
+        ];
+
+
+RunnerPlugin.prototype.CompilationEvents = [
                 {event: 'normal-module-loader', type:"async"},,
                 {event: 'seal', type:"async"},
                 {event: 'optimize', type:"async"},
-                {event: 'optimize-tree', type:"async", callback: this.onCompilationOptimizeTree},
+                {event: 'optimize-tree', type:"async", callback: RunnerPlugin.onCompilationOptimizeTree},
                 {event: 'optimize-modules', type:"async"},
                 {event: 'after-optimize-modules', type:"async"},
                 {event: 'optimize-chunks', type:"async"},
@@ -54,43 +76,34 @@ RunnerPlugin.prototype.apply = function(compiler){
                 {event: 'failed-module', type:"async"},
                 {event: 'module-asset', type:"async"},
                 {event: 'chunk-asset', type:"async"},
-            ]},
-        {event: "make", type:"parallel"},
-        {event: "after-compile", type:"async"},
-        {event: "should-emit", type:"bailResult"},
-        {event: "need-additional-pass",  type:"bailResult"},
-        {event: "additional-pass", type:"bailResult"},
-        {event: "emit", type:"async"},
-        {event: "after-emit", type:"async"},
-        
-        {event: "done", type:"sync"},
-        {event: "failed", type:"sync"},
-        {event: "invalid", type:"sync"},
-        ];
+];
+
+
+
+RunnerPlugin.prototype.apply = function(compiler){
     
-    CompilerEvents.forEach(function(entry){
+    var runner = this;
+    this.CompilerEvents.forEach(function(entry){
         compiler.plugin(entry.event, function(compilation, callback) {
             runner.onCompilerEvents(runner, compiler, entry , compilation, callback);
         });  
     });
-
-    
 };
 
 RunnerPlugin.prototype.onCompilerEvents = function onCompilationEvents(runner, compiler, entry , compilation, callback){
     console.log("Runner Plugin>>" + entry.event);
 
     if(entry.callback && typeof entry.callback === 'function'){
-        entry.callback(runner, compiler, entry , compilation, callback);
+        entry.callback(compilation, callback);
     }
 
     if(typeof compilation === 'string'){
         console.log("Runner Plugin>>" + compilation);
     }
     else if (typeof compilation === 'object' && compilation.plugin && entry.compilationEvents){
-        entry.compilationEvents.forEach(function(e){
-            compilation.plugin(e.event, function(com, callback){
-                runner.onCompilationEvents(runner, e,  com, callback);
+        runner.CompilationEvents.forEach(function(e){
+            compilation.plugin(e.event, function(com, callback1, callback2){
+                runner.onCompilationEvents(runner, e,  com, callback1, callback2);
             });            
         });        
     }
@@ -106,11 +119,11 @@ RunnerPlugin.prototype.onCompilerEvents = function onCompilationEvents(runner, c
     }  
 }
 
-RunnerPlugin.prototype.onCompilationEvents = function onCompilationEvents(runner, entry, compilation, callback){
+RunnerPlugin.prototype.onCompilationEvents = function onCompilationEvents(runner, entry, compilation, callback1, callback2){
     console.log("Runner Plugin>>" + entry.event);
 
     if(entry.callback && typeof entry.callback === 'function'){
-        entry.callback(runner, entry, compilation, callback);
+        entry.callback(runner, entry, compilation, callback1, callback2);
     }
 
     if(typeof compilation === 'string'){
@@ -120,16 +133,26 @@ RunnerPlugin.prototype.onCompilationEvents = function onCompilationEvents(runner
         compilation();
     }
 
-    if(typeof callback === 'string'){
-       console.log("Runner Plugin>>" + callback);
-    }else if(typeof callback === 'function'){
-       callback();
+    if(typeof callback1 === 'string'){
+       console.log("Runner Plugin>>" + callback1);
+    }else if(typeof callback1 === 'function'){
+       callback1();
+    }
+
+    if(typeof callback2 === 'string'){
+       console.log("Runner Plugin>>" + callback2);
+    }else if(typeof callback2 === 'function'){
+       callback2();
     }
 
 }
 
-RunnerPlugin.prototype.onCompilationOptimizeTree = function onCompilationOptimizeTree(runner, entry, chunks, modules){
-    debugger;
+RunnerPlugin.prototype.onCompilationOptimizeTree = function onCompilationOptimizeTree(runner, entry, chunks, modules, callback2){
+    
+}
+
+RunnerPlugin.prototype.onCompilationOptimizeTree = function onCompilationOptimizeTree(runner, entry, chunks, modules, callback2){
+    
 }
 
 module.exports = RunnerPlugin;
