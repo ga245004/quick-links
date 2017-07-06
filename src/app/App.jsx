@@ -1,18 +1,21 @@
 const React = require('react');
-const ReactDOM = require('react-dom');
+const{ AppContainer } = require('react-hot-loader');
+
+const TestCon = require('./components/TestCom');
+
 
 class App extends React.Component {
-fsdf,
+
     render() {
-    return <form>
-                <label>Testeddd</label>
+    return <AppContainer>
+            <div>
+                <label>Testing..</label>
                 <input type="text" />
                 <input type="submit" />
-            </form>;
+                  <TestCon></TestCon>
+            </div>
+        </AppContainer>;
     }
 }
 
-
-
-
-ReactDOM.render( < App /> , document.getElementById('root'));
+module.exports = App;

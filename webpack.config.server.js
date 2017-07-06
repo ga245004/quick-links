@@ -2,17 +2,17 @@ const webpack = require('webpack');
 //var HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
-var srcPath = path.join(__dirname, 'src');
-var distPath = path.join(__dirname, 'lib');
+var srcPath = path.join(__dirname, 'src', 'server');
+var distPath = path.join(__dirname, 'lib', 'server');
 
 module.exports = {
     watch: true,
-    node: {console: true},
+    node: { console: true },
     cache: true,
     devtool: 'source-map',
     context: srcPath,
     entry: {
-        app: './index.js',
+        app: './entry.js',
     },
     output: {
         path: distPath,

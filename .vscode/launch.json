@@ -3,6 +3,12 @@
     "configurations": [{
             "type": "node",
             "request": "launch",
+            "name": "Run Express Program",
+            "program": "${workspaceRoot}/src/express.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Webpack Runner",
             "program": "${workspaceRoot}/webpack-runner.js"
         },
