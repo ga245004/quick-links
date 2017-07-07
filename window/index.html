@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Quick Link App</title>
+
+    <script>
+        if (typeof module === 'object') {
+            window.module = module;
+            module = undefined;
+        }
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="loading-bar.css"> </link>
+    <script type="text/javascript" src="loading-bar.js"></script>
+    <script type="text/javascript" src="jquery.js"></script>
+
+    <script>
+        if (window.module) module = window.module;
+    </script>
+
+    <style>
+        .ldBar-label {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="loading" style="display:none;width: 100%;height: auto;margin: auto;" data-value="1" data-type="fill" data-img="atom.svg" data-fill="data:ldbar/res,bubble(#f00,#d00,100,1)" data-fill-background="#ddd" data-fill-background-extrude="2" class="ldBar auto no-percent label-center">
+
+    </div>
+    <script>
+        //window.location = "http://localhost:3010";
+        $(document).ready(function() {
+            var loading = 1;
+            var increame = 1;
+
+            function animateLoading() {
+                loading = loading + increame;
+                $('#loading')[0].ldBar.set(loading);
+                if (loading > 98) {
+                    increame = -1;
+                } else if (loading < 2) {
+                    increame = 1;
+                }
+                setTimeout(function() {
+                    animateLoading()
+                }, 10);
+
+            }
+
+            setTimeout(function() {
+                animateLoading()
+            }, 10);
+
+            function resize() {
+                var win = $(this); //this = window
+                $('#loading').height(win.height() - 20);
+                $('#loading').width(win.width() - 20);
+            }
+
+            $(window).on('resize', function() {
+                resize();
+            });
+            resize();
+        });
+    </script>
+
+
+    <script>
+        var {
+            ipcRenderer
+        } = require('electron');
+
+        ipcRenderer.on('redirectToServer', (event, arg) => {
+            debugger;
+            console.log(arg);
+        });
+
+        ipcRenderer.on('errored', (event, arg) => {
+            debugger;
+            console.log(arg);
+        });
+    </script>
+</body>
+
+</html>

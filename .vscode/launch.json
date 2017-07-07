@@ -17,8 +17,8 @@
             "type": "node",
             "request": "launch",
             "cwd": "${workspaceRoot}",
-            "runtimeExecutable": "${workspaceRoot}/node_modules/electron/dist/electron.exe",
-            "program": "${workspaceRoot}/main.js"
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd",
+            "program": "${workspaceRoot}/window/main.js"
         }
     ],
 
