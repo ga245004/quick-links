@@ -32,7 +32,7 @@
 
     </div>
     <script>
-        //window.location = "http://localhost:3010";
+        //
         $(document).ready(function() {
             var loading = 1;
             var increame = 1;
@@ -64,7 +64,9 @@
             $(window).on('resize', function() {
                 resize();
             });
-            resize();
+            resize(function() {
+
+            });
         });
     </script>
 
@@ -75,13 +77,16 @@
         } = require('electron');
 
         ipcRenderer.on('redirectToServer', (event, arg) => {
-            debugger;
-            console.log(arg);
+            console.log('redirecting to local server..');
+            // arg is "http://localhost:3010";
+            $('<iframe />', {
+                    src: arg
+                })
+                .appendTo($('body'));
         });
 
         ipcRenderer.on('errored', (event, arg) => {
-            debugger;
-            console.log(arg);
+            console.error(arg);
         });
     </script>
 </body>
